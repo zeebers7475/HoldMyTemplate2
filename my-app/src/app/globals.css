@@ -25,3 +25,65 @@ body {
     text-wrap: balance;
   }
 }
+
+html {
+  margin: 10px 25px;
+}
+
+nav {
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  margin-bottom:50px;
+}
+
+nav ul {
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  gap:30px;
+}
+
+input, textarea {
+  color: black;
+  margin:10px;
+}
+
+.title {
+  background-color:transparent;
+  color: white;
+  font-size:20px;
+  border-bottom:1px solid white;
+}
+
+.primary-button {
+  background-color:darkslategrey;
+  padding: 5px 10px;
+  margin: 0 10px;
+}
+
+.secondary-button {
+  background-color:darkred;
+  padding: 5px 10px;
+  margin: 0 10px;
+}
+
+.text-box {
+  display: flex;
+  align-items: center;
+}
+
+.hidden {
+  display:none;
+}
+
+.visible {
+  display:inline-block;
+}
+
+.split-text {
+  float:right;
+}

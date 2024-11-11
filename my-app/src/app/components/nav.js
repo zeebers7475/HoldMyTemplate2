@@ -1,14 +1,15 @@
-
+import PrimaryButton from "./PrimaryButton"
 
 export default function Nav(props) {
     return (
         <nav>
+            <div>
+                <h1>Hold My Template</h1>
+            </div>
             <ul>
-                <li><h1>Hold My Template</h1></li>
-                <li><button onClick={props.addInput}>Add Input</button></li>
-                <li><button onClick={props.addResponse}>Add Text Box</button></li>
-                <li><button onClick={props.save}>Save</button></li>
-                <li><button onClick={props.edit}>Edit</button></li>
+                <li><PrimaryButton handleOnClick={props.addInput} buttonTitle="Add Input" /></li>
+                <li><PrimaryButton handleOnClick={props.addTextArea} buttonTitle="Add Text Box" /></li>
+                <li>{props.edit ? <PrimaryButton handleOnClick={() => props.editTemplate(false)} buttonTitle="Save" /> : <PrimaryButton handleOnClick={() => props.editTemplate(true)} buttonTitle="Delete" />}</li>
             </ul>
         </nav>
     )
