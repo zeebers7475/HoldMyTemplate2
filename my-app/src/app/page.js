@@ -14,7 +14,7 @@ export default function Home() {
   const [inputs, setInputs] = useState([{ key: 'I' + 0, title: "", textData: "" }]);
   const [textArea, setTextArea] = useState([{key: 'A' + 0, title: "", textData: "" }]);
   const [splitText, setSplitText] = useState([]);
-
+  const [isMobile, setIsMobile] = useState(false);
 
   function addKey() {
     setK((prev) => prev + 1)
@@ -36,9 +36,21 @@ export default function Home() {
     const idKey = e.target.name;
 
     if(idKey.includes("I")) {
-      setInputs(prevData => prevData.map(eachInput => eachInput.key === idKey ? { ...eachInput, title: newTitle } : eachInput))
+      setInputs(prevData => {
+        const updatedInputs = prevData.map(eachInput => eachInput.key === idKey ? { ...eachInput, title: newTitle } : eachInput)
+        localStorage.setItem('template_inputs', JSON.stringify(updatedInputs));
+        localStorage.setItem('template_keyNumb', JSON.stringify(k));
+        return updatedInputs;
+      })
+      
     } else if(idKey.includes("A")) {
-      setTextArea(prevData => prevData.map(eachBox => eachBox.key === idKey ? { ...eachBox, title: newTitle } : eachBox))
+      setTextArea(prevData => {
+        const updatedTextBoxes = prevData.map(eachBox => eachBox.key === idKey ? { ...eachBox, title: newTitle } : eachBox)
+        localStorage.setItem('template_textarea', JSON.stringify(updatedTextBoxes));
+        localStorage.setItem('template_keyNumb', JSON.stringify(k));
+        return updatedTextBoxes
+      }) 
+      
     }
   }
 
@@ -47,24 +59,35 @@ export default function Home() {
     const idKey = e.target.name;
 
     if(idKey.includes("I")) {
-      setInputs(prevData => prevData.map(eachInput => eachInput.key === idKey ? { ...eachInput, textData: newTextData } : eachInput))
+      setInputs(prevData => {
+        const updatedInputs = prevData.map(eachInput => eachInput.key === idKey ? { ...eachInput, textData: newTextData } : eachInput)
+        localStorage.setItem('template_inputs', JSON.stringify(updatedInputs));
+        localStorage.setItem('template_keyNumb', JSON.stringify(k));
+        return updatedInputs;
+      })
     } else if(idKey.includes("A")) {
-      setTextArea(prevData => prevData.map(eachBox => eachBox.key === idKey ? { ...eachBox, textData: newTextData } : eachBox))
+      setTextArea(prevData => {
+        const updatedTextBoxes = prevData.map(eachBox => eachBox.key === idKey ? { ...eachBox, textData: newTextData } : eachBox)
+        localStorage.setItem('template_textarea', JSON.stringify(updatedTextBoxes));
+        localStorage.setItem('template_keyNumb', JSON.stringify(k));
+        return updatedTextBoxes;
+      })
     }
   }
 
   function changeEditMode(boolean) {
     setEdit(boolean)
-    console.log(edit)
   }
 
   function removeTemplate(e) {
     const idKey = e.target.value;
     if(idKey.includes("I")) {
       const newList = inputs.filter(eachInput => eachInput.key !== idKey);
+      localStorage.setItem('template_inputs', JSON.stringify(newList));
       setInputs(newList)
     } else if(idKey.includes("A")) {
         const newList = textArea.filter(eachTextArea => eachTextArea.key !== idKey);
+        localStorage.setItem('template_textarea', JSON.stringify(newList));
         setTextArea(newList)
     }
   }
@@ -83,11 +106,36 @@ export default function Home() {
     } else setDeleteButtonClass("hidden")
   }, [edit])
 
+  useEffect(() => {
+    const savedInputs = JSON.parse(localStorage.getItem('template_inputs'))
+    const savedTextAreas = JSON.parse(localStorage.getItem('template_textarea'))
+    const savedKeyNumb = JSON.parse(localStorage.getItem('template_keyNumb'))
+    if (savedInputs) {
+      setInputs(savedInputs)
+    } 
+    if(savedTextAreas) {
+      setTextArea(savedTextAreas)
+    }
+    if(savedKeyNumb) {
+      setK(savedKeyNumb)
+    }
+  }, [])
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 650);
+    }
+      checkIsMobile();
+      window.addEventListener('resize', checkIsMobile)
+
+      return () => window.removeEventListener('resize', checkIsMobile)
+  }, [])
+
   return (
     <div>
       <Nav addInput={addInput} addTextArea={addTextArea} editTemplate={changeEditMode} edit={edit}/>
-      {inputs.map((input, index) => <Input idKey={input.key} index={index} title={input.title} textData={input.textData} changeTitle={changeTitle} changeTextData={changeTextData} deleteButtonClass={deleteButtonClass} removeTemplate={removeTemplate} changeSplitText={changeSplitText} splitText={splitText} removeSplitText={removeSplitText} />)}
-      {textArea.map((area, index) => <TextBox idKey={area.key} index={index} title={area.title} textData={area.textData} changeTitle={changeTitle} changeTextData={changeTextData} deleteButtonClass={deleteButtonClass} removeTemplate={removeTemplate} />)}
+      {inputs.map((input, index) => <Input idKey={input.key} index={index} title={input.title} textData={input.textData} changeTitle={changeTitle} changeTextData={changeTextData} deleteButtonClass={deleteButtonClass} removeTemplate={removeTemplate} changeSplitText={changeSplitText} splitText={splitText} removeSplitText={removeSplitText} isMobile={isMobile} />)}
+      {textArea.map((area, index) => <TextBox idKey={area.key} index={index} title={area.title} textData={area.textData} changeTitle={changeTitle} changeTextData={changeTextData} deleteButtonClass={deleteButtonClass} removeTemplate={removeTemplate} isMobile={isMobile} />)}
     </div>
   );
 }

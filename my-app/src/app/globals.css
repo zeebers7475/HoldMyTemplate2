@@ -39,6 +39,11 @@ nav {
   margin-bottom:50px;
 }
 
+h1 {
+  font-size:20px;
+  border-bottom:1px solid white;
+}
+
 nav ul {
   display:flex;
   flex-direction: row;
@@ -53,21 +58,24 @@ input, textarea {
 }
 
 .title {
+  margin-bottom:-20px;
+}
+
+.title input {
   background-color:transparent;
   color: white;
-  font-size:20px;
-  border-bottom:1px solid white;
+  font-size:14px;
 }
 
 .primary-button {
   background-color:darkslategrey;
-  padding: 5px 10px;
+  padding: 3px 10px;
   margin: 0 10px;
 }
 
 .secondary-button {
   background-color:darkred;
-  padding: 5px 10px;
+  padding: 2px 10px;
   margin: 0 10px;
 }
 
@@ -86,4 +94,39 @@ input, textarea {
 
 .split-text {
   float:right;
+}
+
+.split-text .flex {
+  margin:10px 0;
+}
+
+.split-text input {
+  background-color:transparent;
+  color:white;
+  border-bottom:1px solid white;
+  width:fit-content;
+}
+
+@media only screen and (max-width: 650px) {
+  nav {
+    flex-direction:column;
+    padding:0;
+  }
+  h1 {
+    margin-bottom:20px;
+  }
+  nav ul {
+    gap:0;
+  }
+  .primary-button, .secondary-button {
+    padding:2px 4px;
+    margin: 0 5px;
+  }
+  input, textarea, .split-text input {
+    width:45%;
+  }
+  .primary-button > svg {
+    pointer-events: none;
+  }
+
 }
