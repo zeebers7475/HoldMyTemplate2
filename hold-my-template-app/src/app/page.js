@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Nav from './components/nav';
 import Input from "./components/Input"
 import TextBox from "./components/TextBox"
+import Instructions from "./components/Instructions"
 
 
 
@@ -15,6 +16,7 @@ export default function Home() {
   const [textArea, setTextArea] = useState([{key: 'A' + 0, title: "", textData: "" }]);
   const [splitText, setSplitText] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [seeInstructions, setSeeInstructions] = useState(true);
 
   function addKey() {
     setK((prev) => prev + 1)
@@ -100,6 +102,11 @@ export default function Home() {
     setSplitText([])
   }
 
+  function changeSeeInstructions(boolean) {
+      setSeeInstructions(boolean)
+      localStorage.setItem('template_instructions', JSON.stringify(boolean))
+  }
+
   useEffect(() => {
     if(edit) {
       setDeleteButtonClass("visible")
@@ -107,6 +114,7 @@ export default function Home() {
   }, [edit])
 
   useEffect(() => {
+    const savedInstructions = JSON.parse(localStorage.getItem('template_instructions'))
     const savedInputs = JSON.parse(localStorage.getItem('template_inputs'))
     const savedTextAreas = JSON.parse(localStorage.getItem('template_textarea'))
     const savedKeyNumb = JSON.parse(localStorage.getItem('template_keyNumb'))
@@ -118,6 +126,9 @@ export default function Home() {
     }
     if(savedKeyNumb) {
       setK(savedKeyNumb)
+    }
+    if(typeof savedInstructions === "boolean") {
+      setSeeInstructions(savedInstructions)
     }
   }, [])
 
@@ -133,9 +144,10 @@ export default function Home() {
 
   return (
     <div>
-      <Nav addInput={addInput} addTextArea={addTextArea} editTemplate={changeEditMode} edit={edit}/>
-      {inputs.map((input, index) => <Input idKey={input.key} index={index} title={input.title} textData={input.textData} changeTitle={changeTitle} changeTextData={changeTextData} deleteButtonClass={deleteButtonClass} removeTemplate={removeTemplate} changeSplitText={changeSplitText} splitText={splitText} removeSplitText={removeSplitText} isMobile={isMobile} />)}
-      {textArea.map((area, index) => <TextBox idKey={area.key} index={index} title={area.title} textData={area.textData} changeTitle={changeTitle} changeTextData={changeTextData} deleteButtonClass={deleteButtonClass} removeTemplate={removeTemplate} isMobile={isMobile} />)}
+      <Nav addInput={addInput} addTextArea={addTextArea} editTemplate={changeEditMode} edit={edit} seeInstructions={seeInstructions} changeSeeInstructions={changeSeeInstructions}/>
+      {inputs.map((input, index) => <Input key={input.key} idKey={input.key} index={index} title={input.title} textData={input.textData} changeTitle={changeTitle} changeTextData={changeTextData} deleteButtonClass={deleteButtonClass} removeTemplate={removeTemplate} changeSplitText={changeSplitText} splitText={splitText} removeSplitText={removeSplitText} isMobile={isMobile} />)}
+      {textArea.map((area, index) => <TextBox key={area.key} idKey={area.key} index={index} title={area.title} textData={area.textData} changeTitle={changeTitle} changeTextData={changeTextData} deleteButtonClass={deleteButtonClass} removeTemplate={removeTemplate} isMobile={isMobile} />)}
+      {seeInstructions ? <Instructions /> : null}
     </div>
   );
 }

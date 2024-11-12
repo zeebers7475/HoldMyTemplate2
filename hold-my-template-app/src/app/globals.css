@@ -107,6 +107,17 @@ input, textarea {
   width:fit-content;
 }
 
+.instructions {
+  margin-top:20px;
+  line-height: 2;
+}
+
+.instructions h2 {
+  text-decoration: underline;
+  
+}
+
+
 @media only screen and (max-width: 650px) {
   nav {
     flex-direction:column;
