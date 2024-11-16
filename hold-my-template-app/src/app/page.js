@@ -6,8 +6,6 @@ import Input from "./components/Input"
 import TextBox from "./components/TextBox"
 import Instructions from "./components/Instructions"
 
-
-
 export default function Home() {
   const [k, setK] = useState(1);
   const [edit, setEdit] = useState(false)
